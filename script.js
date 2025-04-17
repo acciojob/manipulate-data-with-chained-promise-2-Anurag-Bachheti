@@ -1,20 +1,26 @@
-let arrNums = [1, 2, 3, 4];
-let btn = document.getElementById("btn");
-
-btn.addEventListener("click", evenFunc);
-
-function evenFunc(){
-  let evens = arrNums.filter(num => num % 2 === 0);
-  setTimeout(() => {
-    document.getElementById("output").innerHTML += `${evens.join(",")}`;
-    doubleEvens(evens);
-  }, 1000);
+function multipulateArray(){
+	return new Promise((resolve)=> {
+		setTimeout(()=> {
+			resolve([1,2,3,4]);
+		}, 3000)
+	})
+	.then((arr)=>{
+		return new Promise((resolve)=> {
+			const evens = arr.filter((num)=> num % 2 === 0);
+			setTimeout(()=> {
+				document.getElementById("output").innerHTML = evens.join(",");
+				resolve(evens);
+			}, 1000);
+		});
+	})
+	.then((evens)=>{
+		return new Promise((resolve)=> {
+			const doubled = evens.map((num)=> num * 2);
+			setTimeout(()=> {
+				document.getElementById("output").innerHTML = doubled.join(",");
+				resolve(doubled);
+			}, 2000)
+		});
+	});
 }
-
-function doubleEvens(evenArr) {
-  let doubled = evenArr.map(num => num * 2);
-
-  setTimeout(() => {
-    document.getElementById("output").innerHTML += `<br>${doubled.join(",")}`;
-  }, 2000);
-}
+window.onload = multipulateArray;
